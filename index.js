@@ -27,3 +27,12 @@ app.get("/", async (req, res) => {
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
+
+app.post("/chat", async (req, res) => {
+    const { message } = req.body;
+    const completion = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: `${message}` }],
+    });
+    res.json({ completion: completion.data.choices[0].message });
+});
